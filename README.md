@@ -5,6 +5,8 @@ ssh2-multiplexer
 
 * Allows to multiplex the available SSH channels, in order to exec a larger number of commands.
 
+* More about ssh channels limit: http://pedromadias.wordpress.com/2013/06/03/ssh-connections-channel-limit-and-node-js/
+
 
 ### Example
 
