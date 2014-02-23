@@ -1,7 +1,7 @@
 ssh2-multiplexer
 ================
 
-* SSH2 exec channel multiplexer.
+* Uses ssh2 module's connections.
 
 * Allows to enqueue/backpressure/multiplex'ish the available SSH channels in order to send a larger number of commands.
 
