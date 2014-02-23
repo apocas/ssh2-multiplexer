@@ -1,7 +1,7 @@
 {
   "name": "ssh2-multiplexer",
   "description": "Node.js ssh2 exec multiplexer.",
-  "version": "0.1.11",
+  "version": "0.0.1",
   "author": "Pedro Dias <petermdias@gmail.com>",
   "maintainers": [
     "apocas <petermdias@gmail.com>"
@@ -11,20 +11,17 @@
     "url": "http://github.com/apocas/ssh2-multiplexer.git"
   },
   "keywords": [
-    "containers",
-    "api",
-    "docker"
+    "ssh",
+    "exec"
   ],
   "dependencies": {
-    "querystring": "0.2.0",
-    "follow-redirects": "0.0.3",
     "debug": "~0.7.4"
   },
   "devDependencies": {
     "chai": "~1.7.0",
     "mocha": "~1.12.0"
   },
-  "main": "./lib/connectionpool",
+  "main": "./connectionpool",
   "engines": {
     "node": ">= 0.8"
   }
