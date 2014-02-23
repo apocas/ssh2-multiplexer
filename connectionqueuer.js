@@ -1,10 +1,13 @@
+require('colors');
+
 var  sys = require('sys'),
-  events = require('events');
+  events = require('events'),
+  debug = require('debug')('queuer');
 
 var ConnectionQueuer = function (connection) {
   this.connection = connection;
   this.queue = [];
-  this.counter = 0;
+  this.counter = process.env.SSH_CHANNELS || 8;
 
   this.running = false;
 };
@@ -16,7 +19,7 @@ ConnectionQueuer.prototype.start = function () {
   if (!this.running) {
     this.running = true;
     this.interval = setInterval(function () {
-      if(self.counter < (process.env.SSH_CHANNELS || 8)) {
+      if(self.counter > 0) {
         var saux = self.queue.shift();
         if (self.queue.length < 1) {
           self.stop();
@@ -37,6 +40,8 @@ ConnectionQueuer.prototype.start = function () {
             }
           });
         }
+      } else {
+        debug('Queueing...'.yellow);
       }
     }, 100);
   }

@@ -1,7 +1,7 @@
 {
   "name": "ssh2-multiplexer",
   "description": "Node.js ssh2 exec multiplexer.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Pedro Dias <petermdias@gmail.com>",
   "maintainers": [
     "apocas <petermdias@gmail.com>"
@@ -15,7 +15,8 @@
     "exec"
   ],
   "dependencies": {
-    "debug": "~0.7.4"
+    "debug": "~0.7.4",
+    "debug": "*"
   },
   "devDependencies": {
     "chai": "~1.7.0",
