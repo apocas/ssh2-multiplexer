@@ -25,5 +25,8 @@
   "main": "./connectionqueuer",
   "engines": {
     "node": ">= 0.8"
-  }
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -R spec"
+  },
 }
