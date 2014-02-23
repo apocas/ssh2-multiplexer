@@ -1,7 +1,7 @@
 var  sys = require('sys'),
   events = require('events');
 
-var ConnectionPool = function (connection) {
+var ConnectionQueuer = function (connection) {
   this.connection = connection;
   this.queue = [];
   this.counter = 0;
@@ -9,9 +9,9 @@ var ConnectionPool = function (connection) {
   this.running = false;
 };
 
-sys.inherits(ConnectionPool, events.EventEmitter);
+sys.inherits(ConnectionQueuer, events.EventEmitter);
 
-ConnectionPool.prototype.start = function () {
+ConnectionQueuer.prototype.start = function () {
   var self = this;
   if (!this.running) {
     this.running = true;
@@ -42,16 +42,16 @@ ConnectionPool.prototype.start = function () {
   }
 };
 
-ConnectionPool.prototype.flush = function () {
+ConnectionQueuer.prototype.flush = function () {
   this.queue.length = 0;
 };
 
-ConnectionPool.prototype.stop = function () {
+ConnectionQueuer.prototype.stop = function () {
   this.running = false;
   clearInterval(this.interval);
 };
 
-ConnectionPool.prototype.exec = function (cmd, callback) {
+ConnectionQueuer.prototype.exec = function (cmd, callback) {
   this.queue.push({'cmd': cmd, 'callback': callback});
 
   if (!this.running) {
@@ -59,4 +59,4 @@ ConnectionPool.prototype.exec = function (cmd, callback) {
   }
 };
 
-module.exports = ConnectionPool;
+module.exports = ConnectionQueuer;

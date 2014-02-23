@@ -3,7 +3,7 @@ ssh2-multiplexer
 
 * SSH2 exec channel multiplexer.
 
-* Allows to multiplex the available SSH channels in order to send a larger number of commands.
+* Allows to enqueue/backpressure/multiplex'ish the available SSH channels in order to send a larger number of commands.
 
 * Check the examples.
 
@@ -14,12 +14,12 @@ ssh2-multiplexer
 
 ``` js
 var Connection = require('ssh2'),
-  ConectionPool = require('ssh2-multiplexer'),
+  ConnectionQueuer = require('ssh2-multiplexer'),
 
 var conn = new Connection();
 //...
-var pool = new ConnectionPool(conn);
-pool.exec('uptime', function(err, stream) {
+var queuer = new ConnectionQueuer(conn);
+queuer.exec('uptime', function(err, stream) {
   if (err) throw err;
   stream.on('data', function(data, extended) {
     console.log((extended === 'stderr' ? 'STDERR: ' : 'STDOUT: ') + data);
@@ -40,17 +40,17 @@ pool.exec('uptime', function(err, stream) {
 
 ``` js
 var Connection = require('ssh2');
-var ConnectionPool = require('../connectionpool.js');
+var ConnectionQueuer = require('ssh2-multiplexer');
 
 var c = new Connection();
-var pool = new ConnectionPool(c);
+var queuer = new ConnectionQueuer(c);
 
 c.on('ready', function() {
   console.log('Connection :: ready');
 
   for (var i = 50; i >= 0; i--) {
-    //if you use 'c' instead of 'pool' in this exec, it will crash due to channel limit. Openssh allows 8 channels by default.
-    pool.exec('uptime', function(err, stream) {
+    //if you use 'c' instead of 'queuer' in this exec, it will crash due to channel limit. Openssh allows 8 channels by default.
+    queuer.exec('uptime', function(err, stream) {
       if (err) throw err;
       stream.on('data', function(data, extended) {
         console.log((extended === 'stderr' ? 'STDERR: ' : 'STDOUT: ') + data);
