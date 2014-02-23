@@ -28,7 +28,6 @@ pool.exec('uptime', function(err, stream) {
   });
   stream.on('exit', function(code, signal) {
     console.log('Stream :: exit :: code: ' + code + ', signal: ' + signal);
-    conn.end();
   });
 });
 ```
