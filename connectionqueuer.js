@@ -1,5 +1,3 @@
-require('colors');
-
 var  sys = require('sys'),
   events = require('events'),
   debug = require('debug')('queuer');
