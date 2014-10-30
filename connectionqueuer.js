@@ -36,7 +36,6 @@ ConnectionQueuer.prototype.start = function () {
               self.counter++;
             } else {
               stream.on('exit', function (code, signal) {
-                stream.destroy();
                 self.counter++;
               });
             }
