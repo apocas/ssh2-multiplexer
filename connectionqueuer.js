@@ -23,8 +23,15 @@ ConnectionQueuer.prototype.start = function () {
           self.stop();
         }
         if (saux !== undefined) {
+
+          var opts = saux.options;
+          if (typeof opts == 'function') {
+            saux.callback = opts;
+            opts = {};
+          }
+
           self.counter--;
-          self.connection.exec(saux.cmd, function (err, stream) {
+          self.connection.exec(saux.cmd, opts, function (err, stream) {
             if (err) {
               self.counter++;
             } else {
@@ -54,8 +61,8 @@ ConnectionQueuer.prototype.stop = function () {
   clearInterval(this.interval);
 };
 
-ConnectionQueuer.prototype.exec = function (cmd, callback) {
-  this.queue.push({'cmd': cmd, 'callback': callback});
+ConnectionQueuer.prototype.exec = function (cmd, opts, callback) {
+  this.queue.push({'cmd': cmd, 'options': opts, 'callback': callback});
 
   if (!this.running) {
     this.start();
