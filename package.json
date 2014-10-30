@@ -1,7 +1,7 @@
 {
   "name": "ssh2-multiplexer",
   "description": "Node.js ssh2 exec multiplexer.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Pedro Dias <petermdias@gmail.com>",
   "maintainers": [
     "apocas <petermdias@gmail.com>"
