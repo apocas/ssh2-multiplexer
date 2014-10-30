@@ -1,6 +1,8 @@
 ssh2-multiplexer
 ================
 
+[![NPM](https://nodei.co/npm/ssh2-multiplexer.png?downloads=true&stars=true)](https://nodei.co/npm/ssh2-multiplexer/)
+
 * Uses ssh2 module's connections.
 
 * Allows to enqueue/backpressure/multiplex'ish the available SSH channels in order to send a larger number of commands.
@@ -86,4 +88,3 @@ c.connect({
   privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa')
 });
 ```
-
