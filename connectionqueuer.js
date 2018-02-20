@@ -1,4 +1,4 @@
-var  sys = require('sys'),
+var  util = require('util'),
   events = require('events'),
   debug = require('debug')('queuer');
 
@@ -10,7 +10,7 @@ var ConnectionQueuer = function (connection) {
   this.running = false;
 };
 
-sys.inherits(ConnectionQueuer, events.EventEmitter);
+util.inherits(ConnectionQueuer, events.EventEmitter);
 
 ConnectionQueuer.prototype.start = function () {
   var self = this;
@@ -23,15 +23,8 @@ ConnectionQueuer.prototype.start = function () {
           self.stop();
         }
         if (saux !== undefined) {
-
-          var opts = saux.options;
-          if (typeof opts == 'function') {
-            saux.callback = opts;
-            opts = {};
-          }
-
           self.counter--;
-          self.connection.exec(saux.cmd, opts, function (err, stream) {
+          self.connection.exec(saux.cmd, saux.options, function (err, stream) {
             if (err) {
               self.counter++;
             } else {
@@ -60,8 +53,25 @@ ConnectionQueuer.prototype.stop = function () {
   clearInterval(this.interval);
 };
 
-ConnectionQueuer.prototype.exec = function (cmd, opts, callback) {
-  this.queue.push({'cmd': cmd, 'options': opts, 'callback': callback});
+ConnectionQueuer.prototype.end = function () {
+  this.stop();
+  this.connection.end();
+    
+  //inform exec()s in queue that the connection is terminated.
+  this.queue.forEach(function (saux) {
+    if(saux.callback !== undefined) {
+      saux.callback('connection closed');
+    }
+  });
+};
+
+ConnectionQueuer.prototype.exec = function (cmd, options, callback) {
+  if (typeof options == 'function') {
+    callback = options;
+    options = {};
+  }
+
+  this.queue.push({cmd, options, callback});
 
   if (!this.running) {
     this.start();
