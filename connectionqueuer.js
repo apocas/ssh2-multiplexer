@@ -28,7 +28,7 @@ ConnectionQueuer.prototype.start = function () {
             if (err) {
               self.counter++;
             } else {
-              stream.on('exit', function (code, signal) {
+              stream.on('close', function (code, signal) {
                 self.counter++;
               });
             }
