@@ -25,23 +25,11 @@ ConnectionQueuer.prototype.start = function () {
         if (saux !== undefined) {
           self.counter--;
           self.connection.exec(saux.cmd, saux.options, function (err, stream) {
-            //var closed = false;
             if (err) {
-              if(!closed) self.counter++;
-              closed = true;
-              console.log("cq exec/err counter recovered to", self.counter);
+              self.counter++;
             } else {
-              /*
-              stream.on('close', ()=>{
-                if(!closed) self.counter++;
-                closed = true;
-                console.log("cq exec/close");
-              });
-              */
               stream.on('exit', function (code, signal) {
                 self.counter++;
-                //closed = true;
-                console.log("cq exec/exit", code, signal,"counter recovered to", self.counter);
               });
             }
             if (saux.callback !== undefined) {
