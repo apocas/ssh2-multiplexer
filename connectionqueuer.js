@@ -40,7 +40,7 @@ ConnectionQueuer.prototype.start = function () {
           } catch(err) {
             self.counter++;
             if (saux.callback !== undefined) {
-              saux.callback(err, stream);
+              saux.callback(err);
             }
           }
         }
