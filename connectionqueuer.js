@@ -2,10 +2,10 @@ var  util = require('util'),
   events = require('events'),
   debug = require('debug')('queuer');
 
-var ConnectionQueuer = function (connection) {
+var ConnectionQueuer = function (connection, options = {}) {
   this.connection = connection;
   this.queue = [];
-  this.counter = process.env.SSH_CHANNELS || 8;
+  this.counter = process.env.SSH_CHANNELS || options.maxChannels || 8;
 
   this.running = false;
 };
@@ -24,18 +24,25 @@ ConnectionQueuer.prototype.start = function () {
         }
         if (saux !== undefined) {
           self.counter--;
-          self.connection.exec(saux.cmd, saux.options, function (err, stream) {
-            if (err) {
-              self.counter++;
-            } else {
-              stream.on('exit', function (code, signal) {
+          try {
+            self.connection.exec(saux.cmd, saux.options, function (err, stream) {
+              if (err) {
                 self.counter++;
-              });
-            }
+              } else {
+                stream.on('exit', function (code, signal) {
+                  self.counter++;
+                });
+              }
+              if (saux.callback !== undefined) {
+                saux.callback(err, stream);
+              }
+            });
+          } catch(err) {
+            self.counter++;
             if (saux.callback !== undefined) {
-              saux.callback(err, stream);
+              saux.callback(err);
             }
-          });
+          }
         }
       } else {
         debug('Queueing...'.yellow);
